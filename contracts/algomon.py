@@ -24,8 +24,6 @@ def approval():
     opCatch = Bytes('captured')
     opRevive = Bytes('revive')
     opProceed = Bytes('proceed')
-    opGameOver = Bytes('gameover')
-    opBatteOver = Bytes('battleover')
 
     # boolean
     isInBattle = Bytes('isinBattle')
@@ -175,42 +173,6 @@ def approval():
             Approve(),
         )
 
-    @ Subroutine(TealType.none)
-    def gameover():
-        return Seq(
-            # basic sanity checks
-            program.check_self(
-                group_size=Int(1),
-                group_index=Int(0),
-            ),
-            program.check_rekey_zero(1),
-
-            App.localPut(Int(0), isGameOver, Int(1)),
-            App.localPut(Int(0), isButtonDisabled, Int(1)),
-            App.localPut(Int(0), isCaught, Int(0)),
-            App.localPut(Int(0), isBattleOver, Int(0)),
-            App.localPut(Int(0), isInBattle, Int(0)),
-            App.localPut(Int(0), localTotal, App.globalGet(
-                globalScore)),
-            Approve(),
-        )
-
-    @ Subroutine(TealType.none)
-    def battleover():
-        return Seq(
-            # basic sanity checks
-            program.check_self(
-                group_size=Int(1),
-                group_index=Int(0),
-            ),
-            program.check_rekey_zero(1),
-
-            App.localPut(Int(0), isBattleOver, Int(1)),
-            App.localPut(Int(0), localTotal, App.globalGet(
-                globalScore)),
-            Approve(),
-        )
-
     return program.event(
         init=Seq(
             App.globalPut(globalScore, Int(0)),
@@ -255,16 +217,6 @@ def approval():
                 [
                     Txn.application_args[0] == opProceed,
                     handleclick(),
-
-                ],
-                [
-                    Txn.application_args[0] == opGameOver,
-                    gameover(),
-
-                ],
-                [
-                    Txn.application_args[0] == opBatteOver,
-                    battleover(),
 
                 ],
 
