@@ -1,0 +1,386 @@
+#pragma version 5
+txn ApplicationID
+int 0
+==
+bnz main_l23
+txn OnCompletion
+int DeleteApplication
+==
+bnz main_l22
+txn OnCompletion
+int UpdateApplication
+==
+bnz main_l21
+txn OnCompletion
+int OptIn
+==
+bnz main_l20
+txn OnCompletion
+int CloseOut
+==
+bnz main_l19
+txn OnCompletion
+int NoOp
+==
+bnz main_l7
+err
+main_l7:
+txna ApplicationArgs 0
+byte "attack_mons"
+==
+bnz main_l18
+txna ApplicationArgs 0
+byte "run"
+==
+bnz main_l17
+txna ApplicationArgs 0
+byte "captured"
+==
+bnz main_l16
+txna ApplicationArgs 0
+byte "revive"
+==
+bnz main_l15
+txna ApplicationArgs 0
+byte "proceed"
+==
+bnz main_l13
+err
+main_l13:
+callsub sub3
+main_l14:
+int 0
+return
+main_l15:
+callsub sub1
+b main_l14
+main_l16:
+callsub sub2
+b main_l14
+main_l17:
+callsub sub4
+b main_l14
+main_l18:
+callsub sub0
+b main_l14
+main_l19:
+int 0
+return
+main_l20:
+int 0
+byte "player_hp"
+int 100
+app_local_put
+int 0
+byte "player_dmg"
+int 20
+app_local_put
+int 0
+byte "mons_hp"
+int 50
+app_local_put
+int 0
+byte "mons_dmg"
+int 14
+app_local_put
+int 0
+byte "capturedScore"
+int 0
+app_local_put
+int 0
+byte "isinBattle"
+int 0
+app_local_put
+int 0
+byte "isCaught"
+int 0
+app_local_put
+int 0
+byte "isBattleOver"
+int 0
+app_local_put
+int 0
+byte "isGameOver"
+int 0
+app_local_put
+int 0
+byte "isButtonDisabled"
+int 0
+app_local_put
+int 0
+byte "Total"
+int 0
+app_local_put
+int 1
+return
+main_l21:
+int 0
+return
+main_l22:
+int 0
+return
+main_l23:
+byte "globalScore"
+int 0
+app_global_put
+int 1
+return
+sub0: // attack
+global GroupSize
+int 1
+==
+txn GroupIndex
+int 0
+==
+&&
+assert
+gtxn 0 RekeyTo
+global ZeroAddress
+==
+assert
+int 0
+byte "mons_hp"
+app_local_get
+int 0
+>
+int 0
+byte "player_hp"
+app_local_get
+int 0
+>
+&&
+assert
+int 0
+byte "mons_hp"
+app_local_get
+store 2
+int 0
+byte "mons_dmg"
+app_local_get
+store 3
+int 0
+byte "player_hp"
+app_local_get
+store 0
+int 0
+byte "player_dmg"
+app_local_get
+store 1
+load 0
+load 3
+>
+bnz sub0_l5
+int 0
+byte "player_hp"
+int 0
+app_local_put
+int 0
+byte "isGameOver"
+int 1
+app_local_put
+sub0_l2:
+load 2
+load 1
+>
+bnz sub0_l4
+int 0
+byte "mons_hp"
+int 0
+app_local_put
+int 0
+byte "isBattleOver"
+int 1
+app_local_put
+b sub0_l6
+sub0_l4:
+int 0
+byte "mons_hp"
+load 2
+load 1
+-
+app_local_put
+b sub0_l6
+sub0_l5:
+int 0
+byte "player_hp"
+load 0
+load 3
+-
+app_local_put
+b sub0_l2
+sub0_l6:
+int 1
+return
+sub1: // revive
+global GroupSize
+int 1
+==
+txn GroupIndex
+int 0
+==
+&&
+assert
+gtxn 0 RekeyTo
+global ZeroAddress
+==
+assert
+int 0
+byte "player_hp"
+int 100
+app_local_put
+int 0
+byte "mons_hp"
+int 50
+app_local_put
+int 0
+byte "isCaught"
+int 0
+app_local_put
+int 0
+byte "isBattleOver"
+int 0
+app_local_put
+int 0
+byte "isinBattle"
+int 0
+app_local_put
+int 0
+byte "isButtonDisabled"
+int 0
+app_local_put
+int 0
+byte "isGameOver"
+int 0
+app_local_put
+int 0
+byte "Total"
+byte "globalScore"
+app_global_get
+app_local_put
+int 1
+return
+sub2: // capture
+global GroupSize
+int 1
+==
+txn GroupIndex
+int 0
+==
+&&
+assert
+gtxn 0 RekeyTo
+global ZeroAddress
+==
+assert
+int 0
+byte "mons_hp"
+app_local_get
+int 0
+>
+int 0
+byte "player_hp"
+app_local_get
+int 0
+>
+&&
+assert
+int 0
+byte "capturedScore"
+app_local_get
+store 4
+byte "globalScore"
+app_global_get
+store 5
+int 0
+byte "capturedScore"
+load 4
+int 1
++
+app_local_put
+byte "globalScore"
+load 5
+int 1
++
+app_global_put
+int 0
+byte "isinBattle"
+int 0
+app_local_put
+int 0
+byte "mons_hp"
+int 50
+app_local_put
+int 0
+byte "isCaught"
+int 1
+app_local_put
+int 1
+return
+sub3: // handleclick
+global GroupSize
+int 1
+==
+txn GroupIndex
+int 0
+==
+&&
+assert
+gtxn 0 RekeyTo
+global ZeroAddress
+==
+assert
+int 0
+byte "isButtonDisabled"
+int 1
+app_local_put
+int 0
+byte "isinBattle"
+int 1
+app_local_put
+int 0
+byte "Total"
+byte "globalScore"
+app_global_get
+app_local_put
+int 1
+return
+sub4: // backmap
+global GroupSize
+int 1
+==
+txn GroupIndex
+int 0
+==
+&&
+assert
+gtxn 0 RekeyTo
+global ZeroAddress
+==
+assert
+int 0
+byte "isCaught"
+int 0
+app_local_put
+int 0
+byte "isBattleOver"
+int 0
+app_local_put
+int 0
+byte "isinBattle"
+int 0
+app_local_put
+int 0
+byte "mons_hp"
+int 50
+app_local_put
+int 0
+byte "isButtonDisabled"
+int 0
+app_local_put
+int 0
+byte "Total"
+byte "globalScore"
+app_global_get
+app_local_put
+int 1
+return
