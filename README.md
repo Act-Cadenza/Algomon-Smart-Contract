@@ -8,7 +8,7 @@ This is a Blockchain-Based Game or Dapp game developed using Algorand's Pyteal, 
 
 ### Application ID
 
-The smart contract's application ID deployed on Algorand's testnet is as follows: ---------
+The smart contract's application ID deployed on Algorand's testnet is as follows: 215750510
 
 How the smart contract works 
 
