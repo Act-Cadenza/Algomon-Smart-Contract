@@ -71,4 +71,12 @@ This will invokes the capture subroutine, which first verifies if both the playe
 
 This will call the  revive subroutine , replenishing both the player's and the monster's HP to full. The player respawns on the map for another attempt, while states such as isInBattle, isCaught, isGameOver, isButtonDisabled, and isBattleOver are reset to their initial values (false or 0). Furthermore, the value of localTotal is updated by retrieving the current value of globalScore.
 
+## Demo
+
+Here's a [video recording](https://drive.google.com/file/d/1_yhyL0xmOX6I1B8BQtzkijeFIiADcQfH/view?usp=sharing) demonstrating the user's interactions with the dApp.
+
+[![IMAGE ALT TEXT HERE](https://github.com/Act-Cadenza/Algomon/assets/71002490/942a69b5-d5e0-4287-aabf-965353089ff7)](https://drive.google.com/file/d/1_yhyL0xmOX6I1B8BQtzkijeFIiADcQfH/view?usp=sharing)
+
+Here is the [demo link](https://algomon.vercel.app/) hosted in vercel to try it out.
+
 
